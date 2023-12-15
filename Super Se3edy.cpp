@@ -46,41 +46,32 @@ void display()
     glFinish();
 }
 
-// TODO: Add 4f (opacity)
 void land()
 {
-    // Organic Matter
+    // Organic Soil
     glBegin(GL_POLYGON);
-    glColor3f(0.0f, 150.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 150.0f, 0.0f);
-    glVertex3f(0.0f, 150.0f, 0.0f);
-    glEnd();
-
-    glBegin(GL_POLYGON);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 135.0f, 0.0f);
+    glVertex3f(1920.0f, 0.0f, 0.0f);
+    glVertex3f(1920.0f, 135.0f, 0.0f);
     glVertex3f(0.0f, 135.0f, 0.0f);
     glEnd();
 
-    // Surface Soil
+    // Surface Soil 
     glBegin(GL_POLYGON);
-    glColor3f(0.0f, 0.0f, 0.0f);
+    glColor3f(0.4f, 0.2f, 0.0f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 125.0f, 0.0f);
+    glVertex3f(1920.0f, 0.0f, 0.0f);
+    glVertex3f(1920.0f, 125.0f, 0.0f);
     glVertex3f(0.0f, 125.0f, 0.0f);
     glEnd();
 
     // Subsoil
     glBegin(GL_POLYGON);
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.8f, 0.6f, 0.4f);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 0.0f, 0.0f);
-    glVertex3f(1000.0f, 100.0f, 0.0f);
+    glVertex3f(1920.0f, 0.0f, 0.0f);
+    glVertex3f(1920.0f, 100.0f, 0.0f);
     glVertex3f(0.0f, 100.0f, 0.0f);
     glEnd();
 }
