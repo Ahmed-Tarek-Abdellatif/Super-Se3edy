@@ -20,6 +20,7 @@ void message();
 void display();
 void land();
 void ge3edy();
+void clouds();
 
 void my_keyboard(unsigned char key, int x, int y);
 
@@ -31,7 +32,6 @@ int main(int argc, char** argv)
 
     glutFullScreen();
     gluOrtho2D(0.0, 1920, 0.0, 1080);
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Background Color
 
     // Functions Calling
     glutDisplayFunc(welcomeScreen);
@@ -122,9 +122,11 @@ void message()
 
 void display()
 {
+    glClearColor(0.529f, 0.807f, 0.921f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     land();
     ge3edy();
+    clouds();
     glFinish();
 }
 
@@ -342,6 +344,37 @@ void ge3edy()
     glVertex3f(93.0f, 135.0f, 0.0f);
     glVertex3f(120.0f, 135.0f, 0.0f);
     glVertex3f(120.0f, 145.0f, 0.0f);
+    glEnd();
+}
+
+void clouds()
+{
+    GLUquadric* quadric = gluNewQuadric();
+
+    glPushMatrix();
+    glTranslated(300, 950, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 30, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(340, 930, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 30, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(260, 925, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 30, 100, 1);
+    glPopMatrix();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(88.0f, 170.0f, 0.0f);
+    glVertex3f(88.0f, 135.0f, 0.0f);
+    glVertex3f(112.0f, 135.0f, 0.0f);
+    glVertex3f(112.0f, 170.0f, 0.0f);
     glEnd();
 }
 
