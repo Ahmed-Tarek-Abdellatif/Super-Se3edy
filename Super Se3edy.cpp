@@ -22,6 +22,7 @@ void display();
 void land();
 void ge3edy();
 void clouds();
+void beetle();
 
 void my_keyboard(unsigned char key, int x, int y);
 
@@ -195,6 +196,7 @@ void display()
 {
     glClearColor(0.529f, 0.807f, 0.921f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    beetle();
     land();
     ge3edy();
     clouds();
@@ -447,6 +449,69 @@ void clouds()
     glVertex3f(112.0f, 135.0f, 0.0f);
     glVertex3f(112.0f, 170.0f, 0.0f);
     glEnd();
+}
+
+void beetle()
+{
+    GLUquadric* quadric = gluNewQuadric();
+
+    // Body
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslated(1628, 150, 0);
+    gluDisk(quadric, 0, 20, 100, 1);
+    glPopMatrix();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(1600.0f, 150.0f, 0.0f);
+    glVertex3f(1650.0f, 150.0f, 0.0f);
+    glVertex3f(1650.0f, 154.0f, 0.0f);
+    glVertex3f(1600.0f, 154.0f, 0.0f);
+    glEnd();
+
+    // Head
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1605, 155, 0);
+    gluDisk(quadric, 0, 5, 100, 1);
+    glPopMatrix();
+
+    // Body Dots
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1619, 158, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1629, 158, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1639, 158, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
+    // Legs
+    glBegin(GL_POLYGON);
+    glColor3f(0.529f, 0.807f, 0.921f);
+    glVertex3f(1600.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 150.0f, 0.0f);
+    glVertex3f(1600.0f, 150.0f, 0.0f);
+    glEnd();
+
+    // glBegin(GL_POLYGON);
+    // glColor3f(0.0f, 0.0f, 0.0f);
+    // glVertex3f(1600.0f, 135.0f, 0.0f);
+    // glVertex3f(1650.0f, 135.0f, 0.0f);
+    // glVertex3f(1650.0f, 150.0f, 0.0f);
+    // glVertex3f(1600.0f, 150.0f, 0.0f);
+    // glEnd();
 }
 
 void my_keyboard(unsigned char key, int x, int y)
