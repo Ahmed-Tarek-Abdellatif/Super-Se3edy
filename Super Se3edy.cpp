@@ -11,10 +11,11 @@
 using namespace std;
 
 // Functions
-void welcomeScreen();
-void welcomeScreenBackgroundColor();
+void startScreen();
+void background();
 void axe();
-void axeWelcomeScreen();
+void axeDesign(int x, int y, int angle, int scaleX, int scaleY);
+void characters();
 void message();
 
 void display();
@@ -34,33 +35,93 @@ int main(int argc, char** argv)
     gluOrtho2D(0.0, 1920, 0.0, 1080);
 
     // Functions Calling
-    glutDisplayFunc(welcomeScreen);
+    glutDisplayFunc(startScreen);
     glutKeyboardFunc(my_keyboard);
     glutMainLoop();
 }
 
-void welcomeScreen()
+void startScreen()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    welcomeScreenBackgroundColor();
-    axeWelcomeScreen();
+    background();
+    axe();
+    characters();
     message();
     glFinish();
 }
 
-void welcomeScreenBackgroundColor()
+void background()
 {
+    // Rectangle
     glBegin(GL_POLYGON);
-    glColor3f(1.0f, 0.749f, 0.572f);
-    glVertex3d(0.0f, 0.0f, 0.0f);
-    glVertex3d(0.0f, 1080.0f, 0.0f);
-    glVertex3d(1920.0f, 1080.0f, 0.0f);
-    glVertex3d(1920.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex3d(900.0f, 0.0f, 0.0f);
+    glVertex3d(900.0f, 1080.0f, 0.0f);
+    glVertex3d(1020.0f, 1080.0f, 0.0f);
+    glVertex3d(1020.0f, 0.0f, 0.0f);
     glEnd();
+
+    // Top Triangle
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(900.0f, 1080.0f, 0.0f);
+    glVertex3f(1020.0f, 1080.0f, 0.0f);
+    glVertex3f(960.0f, 1020.0f, 0.0f);
+    glEnd();
+
+    // Bottom Triangle
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(900.0f, 0.0f, 0.0f);
+    glVertex3f(1020.0f, 0.0f, 0.0f);
+    glVertex3f(960.0f, 60.0f, 0.0f);
+    glEnd();
+
+    // Stars
+    glPushMatrix();
+    {
+        glPointSize(1.5);
+        glColor3f(1.0, 1.0, 1.0);
+        glBegin(GL_POINTS);
+        for (int i = 1; i < 100; i++)
+        {
+            int x = (rand() % 1920);
+            int y = (rand() % 1080);
+            glVertex3i(x, y, 0);
+        }
+        glEnd();
+    }
+    glPopMatrix();
 }
 
 void axe()
 {
+    // Left axe
+    axeDesign(910, 850, -45, 1, 1);
+
+    // Right axe
+    axeDesign(810, 850, 45, -1, 1);
+}
+
+void axeDesign(int x, int y, int angle, int scaleX, int scaleY)
+{
+    glPushMatrix();
+    glTranslated(x, y, 0);
+    glTranslated(100, 150, 0);
+    glRotatef(angle, 0, 0, 1);
+    glScalef(scaleX, scaleY, 0);
+    glScalef(4, 4, 0);
+    glTranslated(-100, -150, 0);
+
+    // Wooden Handle Shadow
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex3d(99.0f, 99.0f, 0.0f);
+    glVertex3d(99.0f, 156.0f, 0.0f);
+    glVertex3d(108.0f, 156.0f, 0.0f);
+    glVertex3d(108.0f, 99.0f, 0.0f);
+    glEnd();
+
     // Wooden Handle
     glBegin(GL_POLYGON);
     glColor3f(0.85f, 0.5f, 0.42f);
@@ -70,6 +131,14 @@ void axe()
     glVertex3d(107.0f, 100.0f, 0.0f);
     glEnd();
 
+    // Metal Head Shadow
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex3f(88.0f, 145.0f, 0.0f);
+    glVertex3f(121.0f, 156.0f, 0.0f);
+    glVertex3f(121.0f, 139.0f, 0.0f);
+    glEnd();
+
     // Metal Head
     glBegin(GL_TRIANGLES);
     glColor3f(0.0f, 0.0f, 0.0f);
@@ -77,44 +146,46 @@ void axe()
     glVertex3f(120.0f, 155.0f, 0.0f);
     glVertex3f(120.0f, 140.0f, 0.0f);
     glEnd();
+    glPopMatrix();
 }
 
-void axeWelcomeScreen()
+void characters()
 {
-    // Left axe
+    // Bottom Ge3edy
     glPushMatrix();
-    glTranslated(850, 480, 0);
-    glTranslated(100, 150, 0);
-    glRotatef(-45, 0, 0, 1);
-    glScalef(4, 4, 0);
-    glTranslated(-100, -150, 0);
-    axe();
+    glTranslated(860, 50, 0);
+    ge3edy();
     glPopMatrix();
 
-    // Right axe
+    // Top Ge3edy
     glPushMatrix();
-    glTranslated(750, 480, 0);
-    glTranslated(100, 150, 0);
-    glRotatef(45, 0, 0, 1);
-    glScalef(-1, 1, 0);
-    glScalef(4, 4, 0);
-    glTranslated(-100, -150, 0);
-    axe();
+    glTranslated(1060, 350, 0);
+    glScalef(-1, 1, 1);
+    ge3edy();
     glPopMatrix();
 }
 
 void message()
 {
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
 
     glPushMatrix();
-    glTranslated(350, 500, 0);
-    char gameName[] = "Super se3edy";
-    for (int i = 0; i < strlen(gameName); i++)
-        glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, gameName[i]);
+    glTranslated(925, 810, 0);
+    glScalef(0.15, 0.15, 0.0);
+    char super[] = "Super";
+    for (int i = 0; i < strlen(super); i++)
+        glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, super[i]);
     glPopMatrix();
 
-    glRasterPos3f(850.0f, 300.0f, 0.0f);
+    glPushMatrix();
+    glTranslated(915, 780, 0);
+    glScalef(0.15, 0.15, 0.0);
+    char se3edy[] = "Se3edy";
+    for (int i = 0; i < strlen(se3edy); i++)
+        glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, se3edy[i]);
+    glPopMatrix();
+
+    glRasterPos3f(915.0f, 100.0f, 0.0f);
     char screen2[] = "Press x to start";
     for (int i = 0; i < strlen(screen2); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, screen2[i]);
