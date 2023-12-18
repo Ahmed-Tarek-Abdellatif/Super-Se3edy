@@ -21,10 +21,25 @@ void message();
 void display();
 void land();
 void ge3edy();
+void ge3edyHitbox();
 void clouds();
 void beetle();
+void beetleHitbox();
+void changeColor();
 
 void my_keyboard(unsigned char key, int x, int y);
+void obstacleMovement();
+void checkCollision();
+
+// Variables
+float moveGe3edyX = 0.0;
+float moveGe3edyY = 0.0;
+float beetleMovement = 0.0f;
+float direction = 1.0f;
+float gravity = -0.0001; // Adjust the gravity strength as needed
+float ge3edyVelocityY = 0.0;
+bool collision = false;
+bool isJumping = false;
 
 int main(int argc, char** argv)
 {
@@ -523,6 +538,46 @@ void my_keyboard(unsigned char key, int x, int y)
     case ' ':; break;
     }
     glutPostRedisplay();
+}
+
+void ge3edyHitbox()
+{
+    glBegin(GL_POLYGON);
+    glColor3f(0.529f, 0.807f, 0.921f);
+    glVertex3f(60.0f, 400.0f, 0.0f);
+    glVertex3f(60.0f, 135.0f, 0.0f);
+    glVertex3f(140.0f, 135.0f, 0.0f);
+    glVertex3f(140.0f, 400.0f, 0.0f);
+    glEnd();
+}
+
+void beetleHitbox()
+{
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    changeColor();
+    glVertex3f(1600.0f, 175.0f, 0.0f);
+    glVertex3f(1650.0f, 175.0f, 0.0f);
+    glVertex3f(1650.0f, 150.0f, 0.0f);
+    glVertex3f(1600.0f, 150.0f, 0.0f);
+    glEnd();
+}
+
+void checkCollision()
+{
+    // Check Beetle Collision
+    if ((moveGe3edyX + 60 >= beetleMovement + 1600) && (moveGe3edyX <= beetleMovement + 1600) && (moveGe3edyY <= 50)) 
+        collision = true;
+    else 
+        collision = false; 
+}
+
+void changeColor()
+{
+    if (collision) 
+        glColor3f(1.0f, 0.0f, 0.0f);
+    else 
+        glColor3f(0.0f, 1.0f, 0.0f);
 }
 
 // </> with <3 by Ahmed & Amir
