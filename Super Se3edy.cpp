@@ -44,6 +44,7 @@ float beetleMovement = 0.0f;
 
 bool collision = false;
 bool isJumping = false;
+bool isEating = false;
 bool isAlive = true;
 
 int main(int argc, char** argv)
@@ -347,6 +348,20 @@ void ge3edy()
     glVertex3f(77.0f, 390.0f, 0.0f);
     glVertex3f(77.0f, 370.0f, 0.0f);
     glEnd();
+
+    // Health Bar
+    if (isEating)
+    {
+        // Kersh
+        glPushMatrix();
+        glTranslated(115, 230, 0);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        gluDisk(quadric, 0, 40, 100, 1);
+        // Kersh Shadow
+        glColor3f(0.0f, 0.0f, 0.0f);
+        gluDisk(quadric, 35, 40, 100, 1);
+        glPopMatrix();
+    }
 
     // Gelbab
     glBegin(GL_POLYGON);
