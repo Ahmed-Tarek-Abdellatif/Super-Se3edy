@@ -21,26 +21,30 @@ void message();
 void display();
 void land();
 void ge3edy();
-void ge3edyHitbox();
 void mainGe3edy();
 void clouds();
 void beetle();
-void beetleHitbox();
-void changeColor();
+
+void endScreen();
 
 void my_keyboard(unsigned char key, int x, int y);
 void obstacleMovement();
+
 void checkCollision();
+void beetleHitbox();
+void ge3edyHitbox();
 
 // Variables
 float moveGe3edyX = 0.0;
 float moveGe3edyY = 0.0;
-float beetleMovement = 0.0f;
 float direction = 1.0f;
-float gravity = -0.0001; // Adjust the gravity strength as needed
+float gravity = -0.0001; // Adjust Gravity Strength
 float ge3edyVelocityY = 0.0;
+float beetleMovement = 0.0f;
+
 bool collision = false;
 bool isJumping = false;
+bool isAlive = true;
 
 int main(int argc, char** argv)
 {
@@ -53,10 +57,13 @@ int main(int argc, char** argv)
 
     // Functions Calling
     glutDisplayFunc(startScreen);
-    glutIdleFunc(obstacleMovement);
     glutKeyboardFunc(my_keyboard);
+    glutIdleFunc(obstacleMovement);
     glutMainLoop();
 }
+
+
+// - Start Screen ----------------------------
 
 void startScreen()
 {
@@ -208,6 +215,9 @@ void message()
     for (int i = 0; i < strlen(screen2); i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, screen2[i]);
 }
+
+
+// - Display ----------------------------
 
 void display()
 {
@@ -437,10 +447,10 @@ void ge3edy()
     glEnd();
 }
 
-// 3shan el StartScreen Ge3edy don't move
+// Ge3edy Movement
 void mainGe3edy()
 {
-    //Movment
+    //Movement
     glPushMatrix();
     glTranslated(moveGe3edyX, moveGe3edyY, 0);
     ge3edyHitbox();
@@ -450,18 +460,18 @@ void mainGe3edy()
     // Gravity
     if ((moveGe3edyY > 0) || (ge3edyVelocityY > 0))
     {
-        // If Ge3edy is in the air or has upward velocity, apply gravity
+        // Air/Upward Velocity : apply gravity
         moveGe3edyY += ge3edyVelocityY;
         ge3edyVelocityY += gravity;
     }
     else
-        // Ge3edy is on the ground, reset the velocity
+        // Ground : reset the velocity
         ge3edyVelocityY = 0.0;
 
-    // Jumb One time
-    if (moveGe3edyY > 0) 
+    // Jump One time
+    if (moveGe3edyY > 0)
         isJumping = true;
-    else 
+    else
         isJumping = false;
 }
 
@@ -494,7 +504,7 @@ void beetle()
 {
     GLUquadric* quadric = gluNewQuadric();
 
-    //Beetle Movment
+    //Beetle Movement
     glPushMatrix();
     glTranslated(beetleMovement, 0, 0);
     beetleHitbox();
@@ -502,91 +512,115 @@ void beetle()
     // Body
     glPushMatrix();
     glColor3f(1.0f, 0.0f, 0.0f);
-    glTranslated(1628, 150, 0);
+    glTranslated(1628, 135, 0);
     gluDisk(quadric, 0, 20, 100, 1);
     glPopMatrix();
 
     glBegin(GL_POLYGON);
     glColor3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1600.0f, 150.0f, 0.0f);
-    glVertex3f(1650.0f, 150.0f, 0.0f);
-    glVertex3f(1650.0f, 154.0f, 0.0f);
-    glVertex3f(1600.0f, 154.0f, 0.0f);
+    glVertex3f(1600.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 139.0f, 0.0f);
+    glVertex3f(1600.0f, 139.0f, 0.0f);
     glEnd();
 
     // Head
     glPushMatrix();
     glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1605, 155, 0);
+    glTranslated(1605, 140, 0);
     gluDisk(quadric, 0, 5, 100, 1);
+    glPopMatrix();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(1603.8f, 145.0f, 0.0f);
+    glVertex3f(1606.0f, 145.0f, 0.0f);
+    glVertex3f(1606.0f, 155.0f, 0.0f);
+    glVertex3f(1603.8f, 155.0f, 0.0f);
+    glEnd();
+
+    // Circle
+    glPushMatrix();
+    glTranslated(1602, 153, 0);
+    gluDisk(quadric, 0, 3.5, 100, 1);
+    glPopMatrix();
+
+    // Shadow
+    glPushMatrix();
+    glColor3f(0.529f, 0.807f, 0.921f);
+    glTranslated(1601, 151.2, 0);
+    gluDisk(quadric, 0, 2.2, 100, 1);
+    glPopMatrix();
+
+    // Eye
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslated(1605, 140, 0);
+    gluDisk(quadric, 0, 1, 100, 1);
     glPopMatrix();
 
     // Body Dots
     glPushMatrix();
     glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1619, 158, 0);
+    glTranslated(1619, 143, 0);
     gluDisk(quadric, 0, 2.5, 100, 1);
     glPopMatrix();
 
     glPushMatrix();
     glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1629, 158, 0);
+    glTranslated(1629, 143, 0);
     gluDisk(quadric, 0, 2.5, 100, 1);
     glPopMatrix();
 
     glPushMatrix();
     glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1639, 158, 0);
+    glTranslated(1639, 143, 0);
     gluDisk(quadric, 0, 2.5, 100, 1);
     glPopMatrix();
-
-    // Legs
-    glBegin(GL_POLYGON);
-    glColor3f(0.529f, 0.807f, 0.921f);
-    glVertex3f(1600.0f, 135.0f, 0.0f);
-    glVertex3f(1650.0f, 135.0f, 0.0f);
-    glVertex3f(1650.0f, 150.0f, 0.0f);
-    glVertex3f(1600.0f, 150.0f, 0.0f);
-    glEnd();
 
     glPopMatrix();
 }
+
+
+// - Animation ----------------------------
 
 void my_keyboard(unsigned char key, int x, int y)
 {
     switch (key)
     {
-    case 'x': ;
+    case 'x':;
     case 'X': glutDisplayFunc(display);
-    break;
-    //Move Left 
+        break;
+        // Left 
     case 'a': moveGe3edyX -= 50;
         break;
-    //Move Right
+        // Right
     case 'd': moveGe3edyX += 50;
         break;
     }
 
-    //Jump Using Spacebar
-    if (!isJumping) {
-        if (key == 32) {
+    //Jump Using Spacebar/w
+    if (!isJumping)
+    {
+        if ((key == 32) || (key == 'w'))
             moveGe3edyY += 100;
-        }
-        else {
+        else
             isJumping = false;
-        }
     }
     glutPostRedisplay();
 }
 
-void obstacleMovement() {
-    beetleMovement -= 0.3 * direction;
-    if (beetleMovement >= 300 || beetleMovement <= -1920 + 300) {
+void obstacleMovement()
+{
+    beetleMovement -= (0.3 * direction);
+    if ((beetleMovement >= 300) || (beetleMovement <= -1620))
         direction *= -1;
-    }
+
     checkCollision();
     glutPostRedisplay();
 }
+
+
+// - Collision ----------------------------
 
 void ge3edyHitbox()
 {
@@ -602,30 +636,21 @@ void ge3edyHitbox()
 void beetleHitbox()
 {
     glBegin(GL_POLYGON);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    changeColor();
-    glVertex3f(1600.0f, 175.0f, 0.0f);
-    glVertex3f(1650.0f, 175.0f, 0.0f);
-    glVertex3f(1650.0f, 150.0f, 0.0f);
-    glVertex3f(1600.0f, 150.0f, 0.0f);
+    glColor3f(0.529f, 0.807f, 0.921f);
+    glVertex3f(1600.0f, 156.5f, 0.0f);
+    glVertex3f(1654.0f, 156.5f, 0.0f);
+    glVertex3f(1654.0f, 135.0f, 0.0f);
+    glVertex3f(1600.0f, 135.0f, 0.0f);
     glEnd();
 }
 
 void checkCollision()
 {
     // Check Beetle Collision
-    if ((moveGe3edyX + 60 >= beetleMovement + 1600) && (moveGe3edyX <= beetleMovement + 1600) && (moveGe3edyY <= 50)) 
+    if ((moveGe3edyX + 60 >= beetleMovement + 1600) && (moveGe3edyX <= beetleMovement + 1600) && (moveGe3edyY <= 50))
         collision = true;
-    else 
-        collision = false; 
-}
-
-void changeColor()
-{
-    if (collision) 
-        glColor3f(1.0f, 0.0f, 0.0f);
-    else 
-        glColor3f(0.0f, 1.0f, 0.0f);
+    else
+        collision = false;
 }
 
 // </> with <3 by Ahmed & Amir
