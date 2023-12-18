@@ -10,6 +10,7 @@
 #include <GL/glut.h>
 using namespace std;
 
+
 // Functions
 void startScreen();
 void background();
@@ -19,11 +20,11 @@ void characters();
 void message();
 
 void display();
+void beetle();
 void land();
 void ge3edy();
 void mainGe3edy();
 void clouds();
-void beetle();
 
 void endScreen();
 
@@ -33,6 +34,7 @@ void obstacleMovement();
 void checkCollision();
 void beetleHitbox();
 void ge3edyHitbox();
+
 
 // Variables
 float moveGe3edyX = 0.0;
@@ -46,6 +48,7 @@ bool collision = false;
 bool isJumping = false;
 bool isEating = false;
 bool isAlive = true;
+
 
 int main(int argc, char** argv)
 {
@@ -593,6 +596,51 @@ void beetle()
     glPopMatrix();
 
     glPopMatrix();
+}
+
+// - End Screen ----------------------------
+
+void endScreen()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    // Axe Background
+    glPushMatrix();
+    glScalef(5, 5, 0);
+    glTranslated(-765, -820, 0);
+    axe();
+    glPopMatrix();
+
+    // Rectangle
+    glBegin(GL_POLYGON);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex3d(800.0f, 0.0f, 0.0f);
+    glVertex3d(800.0f, 1080.0f, 0.0f);
+    glVertex3d(1120.0f, 1080.0f, 0.0f);
+    glVertex3d(1120.0f, 0.0f, 0.0f);
+    glEnd();
+
+    // Yellow Circle
+    glPushMatrix();
+    GLUquadric* quadric = gluNewQuadric();
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glTranslated(960, 775, 0);
+    gluDisk(quadric, 0, 125, 100, 1);
+    glPopMatrix();
+
+    // Ge3edy
+    glPushMatrix();
+    glScalef(2.5, 2.5, 0);
+    glTranslated(285, -50, 0);
+    ge3edy();
+    glPopMatrix();
+
+    // Text
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glRasterPos3f(915.0f, 100.0f, 0.0f);
+    char screen2[] = "by Ahmed & Amir";
+    for (int i = 0; i < strlen(screen2); i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, screen2[i]);
+    glFinish();
 }
 
 
