@@ -21,11 +21,12 @@ void message();
 
 void display();
 void sun();
+void cloud();
+void cloudDesign(int x, int y);
 void beetle();
 void land();
 void ge3edy();
 void mainGe3edy();
-void clouds();
 
 void endScreen();
 
@@ -48,7 +49,6 @@ float beetleMovement = 0.0f;
 bool collision = false;
 bool isJumping = false;
 bool isEating = false;
-bool isAlive = true;
 
 
 int main(int argc, char** argv)
@@ -181,16 +181,16 @@ void axeDesign(int x, int y, int angle, int scaleX, int scaleY)
 
 void characters()
 {
-    // Bottom Ge3edy
-    glPushMatrix();
-    glTranslated(860, 50, 0);
-    ge3edy();
-    glPopMatrix();
-
     // Top Ge3edy
     glPushMatrix();
     glTranslated(1060, 350, 0);
     glScalef(-1, 1, 1);
+    ge3edy();
+    glPopMatrix();
+
+    // Bottom Ge3edy
+    glPushMatrix();
+    glTranslated(860, 50, 0);
     ge3edy();
     glPopMatrix();
 }
@@ -229,10 +229,10 @@ void display()
     glClearColor(0.529f, 0.807f, 0.921f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     sun();
+    cloud();
     beetle();
     land();
     mainGe3edy();
-    clouds();
     glFinish();
 }
 
@@ -248,6 +248,129 @@ void sun()
     // Outer layer
     glColor3f(0.988f, 0.588f, 0.003f);
     gluDisk(quadric, 125, 130, 100, 1);
+    glPopMatrix();
+}
+
+void cloud()
+{
+    cloudDesign(100, -75);
+    cloudDesign(650, -175);
+    cloudDesign(1250, -125);
+}
+
+void cloudDesign(int x, int y)
+{
+    GLUquadric* quadric = gluNewQuadric();
+
+    glPushMatrix();
+    glTranslated(x, y, 0);
+
+    glPushMatrix();
+    glTranslated(300, 950, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 35, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(340, 925, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 30, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(260, 920, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 30, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(300, 910, 0);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    gluDisk(quadric, 0, 35, 100, 1);
+    glPopMatrix();
+
+    glPopMatrix();
+
+    glEnd();
+}
+
+void beetle()
+{
+    GLUquadric* quadric = gluNewQuadric();
+
+    // Movement
+    glPushMatrix();
+    glTranslated(beetleMovement, 0, 0);
+    beetleHitbox();
+
+    // Body
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glTranslated(1628, 135, 0);
+    gluDisk(quadric, 0, 20, 100, 1);
+    glPopMatrix();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(1600.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 135.0f, 0.0f);
+    glVertex3f(1650.0f, 139.0f, 0.0f);
+    glVertex3f(1600.0f, 139.0f, 0.0f);
+    glEnd();
+
+    // Head
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1605, 140, 0);
+    gluDisk(quadric, 0, 5, 100, 1);
+    glPopMatrix();
+
+    glBegin(GL_POLYGON);
+    glVertex3f(1603.8f, 145.0f, 0.0f);
+    glVertex3f(1606.0f, 145.0f, 0.0f);
+    glVertex3f(1606.0f, 155.0f, 0.0f);
+    glVertex3f(1603.8f, 155.0f, 0.0f);
+    glEnd();
+
+    // Circle
+    glPushMatrix();
+    glTranslated(1602, 153, 0);
+    gluDisk(quadric, 0, 3.5, 100, 1);
+    glPopMatrix();
+
+    // Shadow
+    glPushMatrix();
+    glColor3f(0.529f, 0.807f, 0.921f);
+    glTranslated(1601, 151.2, 0);
+    gluDisk(quadric, 0, 2.2, 100, 1);
+    glPopMatrix();
+
+    // Eye
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glTranslated(1605, 140, 0);
+    gluDisk(quadric, 0, 1, 100, 1);
+    glPopMatrix();
+
+    // Body Dots
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1619, 143, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1629, 143, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glTranslated(1639, 143, 0);
+    gluDisk(quadric, 0, 2.5, 100, 1);
+    glPopMatrix();
+
     glPopMatrix();
 }
 
@@ -508,111 +631,6 @@ void mainGe3edy()
         isJumping = true;
     else
         isJumping = false;
-}
-
-void clouds()
-{
-    GLUquadric* quadric = gluNewQuadric();
-
-    glPushMatrix();
-    glTranslated(300, 950, 0);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    gluDisk(quadric, 0, 30, 100, 1);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(340, 930, 0);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    gluDisk(quadric, 0, 30, 100, 1);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslated(260, 925, 0);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    gluDisk(quadric, 0, 30, 100, 1);
-    glPopMatrix();
-
-    glEnd();
-}
-
-void beetle()
-{
-    GLUquadric* quadric = gluNewQuadric();
-
-    //Beetle Movement
-    glPushMatrix();
-    glTranslated(beetleMovement, 0, 0);
-    beetleHitbox();
-
-    // Body
-    glPushMatrix();
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glTranslated(1628, 135, 0);
-    gluDisk(quadric, 0, 20, 100, 1);
-    glPopMatrix();
-
-    glBegin(GL_POLYGON);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1600.0f, 135.0f, 0.0f);
-    glVertex3f(1650.0f, 135.0f, 0.0f);
-    glVertex3f(1650.0f, 139.0f, 0.0f);
-    glVertex3f(1600.0f, 139.0f, 0.0f);
-    glEnd();
-
-    // Head
-    glPushMatrix();
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1605, 140, 0);
-    gluDisk(quadric, 0, 5, 100, 1);
-    glPopMatrix();
-
-    glBegin(GL_POLYGON);
-    glVertex3f(1603.8f, 145.0f, 0.0f);
-    glVertex3f(1606.0f, 145.0f, 0.0f);
-    glVertex3f(1606.0f, 155.0f, 0.0f);
-    glVertex3f(1603.8f, 155.0f, 0.0f);
-    glEnd();
-
-    // Circle
-    glPushMatrix();
-    glTranslated(1602, 153, 0);
-    gluDisk(quadric, 0, 3.5, 100, 1);
-    glPopMatrix();
-
-    // Shadow
-    glPushMatrix();
-    glColor3f(0.529f, 0.807f, 0.921f);
-    glTranslated(1601, 151.2, 0);
-    gluDisk(quadric, 0, 2.2, 100, 1);
-    glPopMatrix();
-
-    // Eye
-    glPushMatrix();
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glTranslated(1605, 140, 0);
-    gluDisk(quadric, 0, 1, 100, 1);
-    glPopMatrix();
-
-    // Body Dots
-    glPushMatrix();
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1619, 143, 0);
-    gluDisk(quadric, 0, 2.5, 100, 1);
-    glPopMatrix();
-
-    glPushMatrix();
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1629, 143, 0);
-    gluDisk(quadric, 0, 2.5, 100, 1);
-    glPopMatrix();
-
-    glPushMatrix();
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glTranslated(1639, 143, 0);
-    gluDisk(quadric, 0, 2.5, 100, 1);
-    glPopMatrix();
-
-    glPopMatrix();
 }
 
 // - End Screen ----------------------------
