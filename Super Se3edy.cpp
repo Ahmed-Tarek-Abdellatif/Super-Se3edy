@@ -26,7 +26,6 @@ void cloudDesign(int x, int y);
 void beetle();
 void land();
 void ge3edy();
-void mainGe3edy();
 
 void endScreen();
 
@@ -49,6 +48,7 @@ float beetleMovement = 0.0f;
 bool collision = false;
 bool isJumping = false;
 bool isEating = false;
+bool isPlaying = false;
 
 
 int main(int argc, char** argv)
@@ -232,7 +232,7 @@ void display()
     cloud();
     beetle();
     land();
-    mainGe3edy();
+    ge3edy();
     glFinish();
 }
 
@@ -407,6 +407,14 @@ void land()
 void ge3edy()
 {
     GLUquadric* quadric = gluNewQuadric();
+
+    // Movement
+    glPushMatrix();
+    if (isPlaying)
+    {
+        glTranslated(moveGe3edyX, moveGe3edyY, 0);
+        ge3edyHitbox();
+    }
 
     // Face
     glPushMatrix();
@@ -603,16 +611,6 @@ void ge3edy()
     glVertex3f(120.0f, 135.0f, 0.0f);
     glVertex3f(120.0f, 145.0f, 0.0f);
     glEnd();
-}
-
-// Ge3edy Movement
-void mainGe3edy()
-{
-    //Movement
-    glPushMatrix();
-    glTranslated(moveGe3edyX, moveGe3edyY, 0);
-    ge3edyHitbox();
-    ge3edy();
     glPopMatrix();
 
     // Gravity
@@ -632,6 +630,7 @@ void mainGe3edy()
     else
         isJumping = false;
 }
+
 
 // - End Screen ----------------------------
 
@@ -686,13 +685,16 @@ void my_keyboard(unsigned char key, int x, int y)
     switch (key)
     {
     case 'x':;
-    case 'X': glutDisplayFunc(display);
+    case 'X':isPlaying = true;
+        glutDisplayFunc(display);
         break;
-        // Left 
-    case 'a': moveGe3edyX -= 50;
+        // Left
+    case 'a': if (moveGe3edyX > 0)
+        moveGe3edyX -= 50;
         break;
         // Right
-    case 'd': moveGe3edyX += 50;
+    case 'd': if (moveGe3edyX < 1700)
+        moveGe3edyX += 50;
         break;
     }
 
