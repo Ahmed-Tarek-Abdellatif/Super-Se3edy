@@ -20,6 +20,7 @@ void characters();
 void message();
 
 void display();
+void sun();
 void beetle();
 void land();
 void ge3edy();
@@ -227,11 +228,27 @@ void display()
 {
     glClearColor(0.529f, 0.807f, 0.921f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    sun();
     beetle();
     land();
     mainGe3edy();
     clouds();
     glFinish();
+}
+
+void sun()
+{
+    GLUquadric* quadric = gluNewQuadric();
+
+    // Inner layer
+    glPushMatrix();
+    glTranslated(0, 1080, 0);
+    glColor3f(1.0f, 0.8f, 0.2f);
+    gluDisk(quadric, 0, 125, 100, 1);
+    // Outer layer
+    glColor3f(0.988f, 0.588f, 0.003f);
+    gluDisk(quadric, 125, 130, 100, 1);
+    glPopMatrix();
 }
 
 void land()
