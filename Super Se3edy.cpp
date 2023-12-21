@@ -75,6 +75,7 @@ void drawSun();
 void drawCloud();
 void drawCloudDesign(Point point);
 void drawObstacle();
+void drawFoodAndWater();
 void drawLand();
 
 void handleKeyboardInput(unsigned char key, int x, int y);
@@ -183,6 +184,7 @@ void displayScene()
     moveGe3edy();
     moveObstacles();
     drawLand();
+    drawFoodAndWater();
     glFinish();
 }
 
@@ -414,6 +416,18 @@ void drawObstacle()
     drawCircle({ 0.0f, 0.0f, 0.0f }, { 1619.0f, 143.0f }, 0.0f, 2.5f);
     drawCircle({ 0.0f, 0.0f, 0.0f }, { 1629.0f, 143.0f }, 0.0f, 2.5f);
     drawCircle({ 0.0f, 0.0f, 0.0f }, { 1639.0f, 143.0f }, 0.0f, 2.5f);
+}
+
+void drawFoodAndWater()
+{
+    // Rectangle Shadow
+    drawRectangle({ 0.0f, 0.0f, 0.0f }, { 585.0f, 490.0f }, { 100.0f, 90.0f });
+    // Middle rectangle
+    drawRectangle({ 0.066f, 0.168f, 0.235f }, { 590.0f, 495.0f }, { 90.0f, 80.0f });
+    // Water
+    drawTriangle({ 0.180f, 0.639f, 0.949f }, 590.0f, 590.0f, 680.0f, 575.0f, 495.0f, 575.0f);
+    // Orange
+    drawCircle({ 1.0f, 0.647f, 0.0f }, { 655.0f, 520.0f }, 0.0f, 15.0f);
 }
 
 void drawLand()
