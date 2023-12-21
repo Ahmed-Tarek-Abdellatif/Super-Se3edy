@@ -10,22 +10,36 @@
 #include <GL/glut.h>
 using namespace std;
 
+enum GameState
+{
+    START_SCREEN,
+    PLAYING,
+    GAME_OVER
+};
+
 struct Color
 {
     float red;
     float green;
     float blue;
 };
+
 struct Point
 {
     float x;
     float y;
 };
+
 struct Dimensions
 {
     float length;
     float width;
 };
+
+GameState gameState = START_SCREEN;
+
+float windowWidth = 1920.0f;
+float windowHeight = 1080.0f;
 
 float moveGe3edyX = 0.0f;
 float moveGe3edyY = 0.0f;
@@ -38,7 +52,6 @@ float obstacleSpeed = 0.0f;
 float cloudSpeed = 0.0f;
 
 bool isColliding = false;
-bool isPlaying = false;
 bool isJumping = false;
 bool isEating = false;
 
@@ -81,7 +94,7 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 
     glutFullScreen();
-    gluOrtho2D(0.0f, 1920.0f, 0.0f, 1080.0f);
+    gluOrtho2D(0.0f, windowWidth, 0.0f, windowHeight);
 
     glutDisplayFunc(drawStartScreen);
     glutKeyboardFunc(handleKeyboardInput);
@@ -421,14 +434,18 @@ void handleKeyboardInput(unsigned char key, int x, int y)
     switch (key)
     {
     case 'x':;
-    case 'X': isPlaying = true;
-        glutDisplayFunc(displayScene);
+    case 'X':
+        if (gameState == START_SCREEN)
+        {
+            gameState = PLAYING;
+            glutDisplayFunc(displayScene);
+        }
         break;
-    // Left
+        // Left
     case 'a': if (moveGe3edyX > 0.0f)
         moveGe3edyX -= 50.0f;
         break;
-    // Right
+        // Right
     case 'd': if (moveGe3edyX < 1700.0f)
         moveGe3edyX += 50.0f;
         break;
@@ -447,9 +464,12 @@ void handleKeyboardInput(unsigned char key, int x, int y)
 
 void animateScene()
 {
-    moveClouds();
-    moveObstacles();
-    moveGe3edy();
+    if (gameState == PLAYING)
+    {
+        moveClouds();
+        moveObstacles();
+        moveGe3edy();
+    }
     glutPostRedisplay();
 }
 
@@ -528,7 +548,7 @@ void checkCollision()
         else
         {
             glutDisplayFunc(drawEndScreen);
-            isPlaying = false;
+            gameState = GAME_OVER;
         }
     }
 }
