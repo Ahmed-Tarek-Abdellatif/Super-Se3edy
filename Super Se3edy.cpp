@@ -515,6 +515,8 @@ void handleKeyboardInput(unsigned char key, int x, int y)
     case 'd': if (moveGe3edyX < 1700.0f)
         moveGe3edyX += 50.0f;
         break;
+        //exit
+    case 27: exit(0);
     }
 
     //Jump Using Spacebar/w
