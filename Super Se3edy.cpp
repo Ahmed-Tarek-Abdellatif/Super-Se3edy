@@ -504,11 +504,14 @@ void moveClouds()
 void moveObstacles()
 {
     obstacleSpeed -= (0.3f * direction);
-    if ((obstacleSpeed >= 300.0f) || (obstacleSpeed <= -1620.0f))
+    if ((obstacleSpeed >= 700.0f) || (obstacleSpeed <= -1800.0f))
         direction *= -1;
 
     glPushMatrix();
     glTranslated(obstacleSpeed, 0.0f, 0.0f);
+    glTranslated(1600.0f, 135.0f, 0.0f);
+    glScalef(direction, 1, 1);
+    glTranslated(-1600.0f, -135.0f, 0.0f);
     drawHitbox({ 1600.0f, 135.0f }, { 54.0f, 21.0f });
     drawObstacle();
     glPopMatrix();
