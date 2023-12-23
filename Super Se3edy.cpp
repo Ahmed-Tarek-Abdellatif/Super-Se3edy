@@ -44,16 +44,20 @@ float windowHeight = 1080.0f;
 float moveGe3edyX = 0.0f;
 float moveGe3edyY = 0.0f;
 float direction = 1.0f;
+float boxDirection = 1.0f;
 
 float gravity = -0.0001f;
 float ge3edyVelocity = 0.0f;
 
 float obstacleSpeed = 0.0f;
+float boxSpeed = 0.0f;
 float cloudSpeed = 0.0f;
 
-bool isColliding = false;
+bool isCollidingbeetle = false;
+bool isCollidingBox = false;
 bool isJumping = false;
 bool isEating = false;
+bool isEvading = true;
 
 void drawRectangle(Color color, Point point, Dimensions dimensions);
 void drawTriangle(Color color, float firstX, float secondX, float thirdX, float firstY, float secondY, float thirdY);
@@ -82,6 +86,7 @@ void handleKeyboardInput(unsigned char key, int x, int y);
 void animateScene();
 void moveClouds();
 void moveObstacles();
+void moveBox();
 void moveGe3edy();
 
 void drawHitbox(Point point, Dimensions dimensions);
@@ -184,7 +189,7 @@ void displayScene()
     moveGe3edy();
     moveObstacles();
     drawLand();
-    drawFoodAndWater();
+    moveBox();
     glFinish();
 }
 
@@ -507,6 +512,19 @@ void moveObstacles()
     drawHitbox({ 1600.0f, 135.0f }, { 54.0f, 21.0f });
     drawObstacle();
     glPopMatrix();
+}
+
+void moveBox()
+{
+    boxSpeed += 0.4 * boxDirection;
+    if (boxSpeed > 2000)
+        boxSpeed = -1300;
+
+    glPushMatrix();
+    glTranslated(boxSpeed, 0.0f, 0.0f);
+    drawHitbox({ 585.0f, 490.0f }, { 100.0f, 90.0f });
+    drawFoodAndWater();
+    glPopMatrix();
 
     checkCollision();
 }
@@ -534,7 +552,10 @@ void moveGe3edy()
     if (moveGe3edyY > 0.0f)
         isJumping = true;
     else
+    {
         isJumping = false;
+        isEvading = true;
+    }
 }
 
 // - 6 ----------------------------
@@ -548,22 +569,52 @@ void checkCollision()
 {
     // Check Obstacle Collision
     if ((moveGe3edyX + 60.0f >= obstacleSpeed + 1600.0f) && (moveGe3edyX <= obstacleSpeed + 1600.0f) && (moveGe3edyY <= 50.0f))
-        isColliding = true;
+        isCollidingbeetle = true;
     else
-        isColliding = false;
+        isCollidingbeetle = false;
 
-    if (isColliding)
+    if (isCollidingbeetle)
     {
         if (isEating)
         {
             isEating = false;
-            obstacleSpeed = 0.0f;
+
+            if ((direction == 1))
+                obstacleSpeed = 500.0f;
+            else
+                obstacleSpeed = -1750;
+
+            direction = -1;
         }
         else
         {
             glutDisplayFunc(drawEndScreen);
             gameState = GAME_OVER;
         }
+    }
+
+    // Box Collision
+    if ((moveGe3edyX + 100.0f >= boxSpeed + 585.0f) && (moveGe3edyX <= boxSpeed + 585.0f) && (moveGe3edyY >= 90.0f))
+        isCollidingBox = true;
+    else
+        isCollidingBox = false;
+
+    if (isCollidingBox)
+    {
+        if (isEating == false)
+            isEating = true;
+
+        if (boxDirection == 1)
+        {
+            boxSpeed = 2000;
+            boxDirection = -1;
+        }
+        else
+        {
+            boxSpeed = 1300.0;
+            boxDirection = 1;
+        }
+
     }
 }
 
