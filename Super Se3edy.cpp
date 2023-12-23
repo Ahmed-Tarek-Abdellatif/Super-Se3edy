@@ -66,7 +66,7 @@ bool isEvading = true;
 void init();
 
 void drawRectangle(Color color, Point point, float width, float height);
-void drawTriangle(Color color, float firstX, float secondX, float thirdX, float firstY, float secondY, float thirdY);
+void drawTriangle(Color color, Point point1, Point point2, Point point3);
 void drawCircle(Color color, Point translate, float innerRadius, float outerRadius);
 void drawMessage(Point point, const char* text, int font);
 
@@ -140,13 +140,13 @@ void drawRectangle(Color color, Point point, float width, float height)
     glEnd();
 }
 
-void drawTriangle(Color color, float firstX, float secondX, float thirdX, float firstY, float secondY, float thirdY)
+void drawTriangle(Color color, Point point1, Point point2, Point point3)
 {
     glColor3f(color.red, color.green, color.blue);
     glBegin(GL_TRIANGLES);
-    glVertex3f(firstX, firstY, 0.0f);
-    glVertex3f(secondX, secondY, 0.0f);
-    glVertex3f(thirdX, thirdY, 0.0f);
+    glVertex3f(point1.x, point1.y, 0.0f);
+    glVertex3f(point2.x, point2.y, 0.0f);
+    glVertex3f(point3.x, point3.y, 0.0f);
     glEnd();
 }
 
@@ -275,9 +275,9 @@ void drawAxeDesign(Point point, float angle, Point scale)
     // Wooden Handle
     drawRectangle({ 0.85f, 0.5f, 0.42f }, { 100.0f, 100.0f }, 7.0f, 55.0f);
     // Metal Head Shadow
-    drawTriangle(white, 88.0f, 121.0f, 121.0f, 145.0f, 156.0f, 139.0f);
+    drawTriangle(white, {88.0f, 145.0f}, {121.0f, 156.0f}, {121.0f, 139.0f});
     // Metal Head
-    drawTriangle(black, 90.0f, 120.0f, 120.0f, 145.0f, 155.0f, 140.0f);
+    drawTriangle(black, { 90.0f, 145.0f }, {120.0f, 155.0f}, {120.0f, 140.0f});
     glPopMatrix();
 }
 
@@ -354,9 +354,9 @@ void drawBackground()
 {
     drawRectangle(white, { 900.0f, 0.0f }, 120.0f, 1080.0f);
     // Top Triangle
-    drawTriangle(black, 900.0f, 1020.0f, 960.0f, 1080.0f, 1080.0f, 1020.0f);
+    drawTriangle(black, {900.0f, 1080.0f}, {1020.0f, 1080.0f}, {960.0f, 1020.0f});
     // Bottom Triangle
-    drawTriangle(black, 900.0f, 1020.0f, 960.0f, 0.0f, 0.0f, 60.0f);
+    drawTriangle(black, {900.0f, 0.0f},{ 1020.0f, 0.0f}, {960.0f, 60.0f});
 
     // Dots
     glPushMatrix();
@@ -471,7 +471,7 @@ void drawBox()
     // Middle rectangle
     drawRectangle({ 0.066f, 0.168f, 0.235f }, { 590.0f, 495.0f }, 90.0f, 80.0f);
     // Water
-    drawTriangle({ 0.180f, 0.639f, 0.949f }, 590.0f, 590.0f, 680.0f, 575.0f, 495.0f, 575.0f);
+    drawTriangle({ 0.180f, 0.639f, 0.949f },{ 590.0f, 575.0f}, {590.0f, 495.0f}, {680.0f, 575.0f});
     // Orange
     drawCircle({ 1.0f, 0.647f, 0.0f }, { 655.0f, 520.0f }, 0.0f, 15.0f);
 }
