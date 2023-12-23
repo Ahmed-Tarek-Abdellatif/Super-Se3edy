@@ -7,6 +7,7 @@
 
 
 #include <windows.h>
+#include <string>
 #include <GL/glut.h>
 using namespace std;
 
@@ -46,6 +47,7 @@ float moveGe3edyY = 0.0f;
 float direction = 1.0f;
 float boxDirection = 1.0f;
 
+int score = 0;
 float gravity = -0.0001f;
 float ge3edyVelocity = 0.0f;
 
@@ -78,6 +80,7 @@ void drawCharacters();
 void drawSun();
 void drawCloud();
 void drawCloudDesign(Point point);
+void drawScoreBox();
 void drawObstacle();
 void drawFoodAndWater();
 void drawLand();
@@ -159,7 +162,7 @@ void drawMessage(Point point, const char* text, int font)
 
     else if (font == 2)
     {
-        glRasterPos3f(915.0f, 100.0f, 0.0f);
+        glRasterPos3f(point.x, point.y, 0.0f);
         for (int i = 0; i < strlen(text); i++)
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
     }
@@ -186,6 +189,7 @@ void displayScene()
     glClear(GL_COLOR_BUFFER_BIT);
     drawSun();
     moveClouds();
+    drawScoreBox();
     moveGe3edy();
     moveObstacles();
     drawLand();
@@ -374,6 +378,27 @@ void drawSun()
     drawCircle({ 1.0f, 0.8f, 0.2f }, { 0.0f, 1080.0f }, 0.0f, 125.0f);
     // Outer layer
     drawCircle({ 0.988f, 0.588f, 0.003f }, { 0.0f, 1080.0f }, 125.0f, 130.0f);
+}
+
+void drawScoreBox()
+{
+    drawRectangle({ 1.0f, 1.0f, 1.0f }, { 1750.0f, 970.0f }, { 160.0f, 90.0f });
+
+    // Score
+    string scoreText = "Score: " + to_string(score);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    drawMessage({ 1780.0f, 1030.0f }, scoreText.c_str(), 2);
+
+    // Health Bar
+
+    if (!isEating)
+        drawRectangle({ 1.0f, 0.0f, 0.0f }, { 1780.0f, 980.0f }, { 40.0f, 30.0f });
+    else
+    {
+        drawRectangle({ 0.0f, 1.0f, 0.0f }, { 1780.0f, 980.0f }, { 40.0f, 30.0f });
+
+        drawRectangle({ 0.0f, 1.0f, 0.0f }, { 1845.0f, 980.0f }, { 40.0f, 30.0f });
+    }
 }
 
 void drawCloud()
@@ -588,6 +613,7 @@ void checkCollision()
                 obstacleSpeed = -1750;
 
             direction = -1;
+            score -= 5;
         }
         else
         {
@@ -616,6 +642,18 @@ void checkCollision()
         {
             boxSpeed = 1300.0;
             boxDirection = 1;
+        }
+
+        score += 10;
+    }
+
+    //Add Score If Evaded Beetle
+    if ((moveGe3edyX + 60.0f >= obstacleSpeed + 1600.0f) && (moveGe3edyX <= obstacleSpeed + 1600.0f))
+    {
+        if (isEvading)
+        {
+            score += 15;
+            isEvading = false;
         }
 
     }
