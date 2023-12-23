@@ -6,6 +6,7 @@
 */
 
 #include <windows.h>
+#include <cmath>
 #include <string>
 #include <GL/glut.h>
 using namespace std;
@@ -56,6 +57,8 @@ float ge3edyVelocity = 0.0f;
 float obstacleSpeed = 0.0f;
 float boxSpeed = 0.0f;
 float cloudSpeed = 0.0f;
+float cloudY = -175;
+float randomNumber;
 
 bool isCollidingBeetle = false;
 bool isCollidingBox = false;
@@ -102,6 +105,7 @@ void drawHitbox(Point point, float width, float height);
 void checkCollision();
 void checkObstacleCollision();
 void checkBoxCollision();
+void random_number();
 
 
 // --------------------------------------
@@ -424,9 +428,9 @@ void drawSun()
 
 void drawCloud()
 {
-    drawCloudDesign({ 100.0f, -75.0f });
-    drawCloudDesign({ 650.0f, -175.0f });
-    drawCloudDesign({ 1250.0f, -125.0f });
+    drawCloudDesign({ 100.0f, cloudY });
+    drawCloudDesign({ 650.0f, cloudY - 100 });
+    drawCloudDesign({ 1250.0f, cloudY - 50 });
 }
 
 void drawCloudDesign(Point point)
@@ -536,13 +540,17 @@ void animateScene()
 
 void moveClouds()
 {
-    cloudSpeed += 0.3f;
+    random_number();
+    cloudSpeed += 0.5f;
     glPushMatrix();
     glTranslated(cloudSpeed, 0.0f, 0.0f);
     drawCloud();
     glPopMatrix();
     if (cloudSpeed > windowWidth)
+    {
         cloudSpeed = -1600.0f;
+        cloudY = randomNumber;
+    }
 }
 
 void moveBox()
@@ -676,11 +684,16 @@ void checkBoxCollision()
         }
         else
         {
-            boxSpeed = 1300.0;
+            boxSpeed = 1400.0;
             boxDirection = 1;
         }
         score += 10;
     }
+}
+
+void random_number()
+{
+    randomNumber = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 100.0));
 }
 
 // </> with <3 by Ahmed & Amir
